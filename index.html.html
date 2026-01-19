@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>buat owel</title>
+
+<style>
+@font-face {
+    font-family: 'KGHappy';
+    src: url('KGHappy.ttf') format('truetype');
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'KGHappy', cursive;
+    background: linear-gradient(180deg, #ffd6e8, #fff0f6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Sparkle */
+.sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: sparkle 5s infinite;
+}
+
+@keyframes sparkle {
+    0% {transform: translateY(0); opacity: 0;}
+    50% {opacity: 1;}
+    100% {transform: translateY(-600px); opacity: 0;}
+}
+
+/* LOCK SCREEN */
+#lockScreen {
+    text-align: center;
+}
+
+.pass-dots {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #ff69b4;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+.dot.filled {
+    background: #ff69b4;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    gap: 10px;
+    justify-content: center;
+}
+
+.keypad button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: #ff85c1;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: 'KGHappy';
+}
+
+.keypad button:hover {
+    background: #ff69b4;
+}
+
+.clue {
+    margin: 15px auto 0;
+    font-size: 13px;
+    color: #c9184a;
+    text-align: center;
+    background: #ffe5ec;
+    padding: 6px 12px;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+/* LETTER PAGE */
+#letterPage {
+    display: none;
+    text-align: center;
+}
+
+.envelope {
+    width: 220px;
+    height: 140px;
+    background: #ffb3d9;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    margin: auto;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%,100% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+}
+
+.envelope::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 110px solid transparent;
+    border-right: 110px solid transparent;
+    border-top: 70px solid #ff8fcf;
+}
+
+.envelope-text {
+    margin-top: 150px;
+    color: #c9184a;
+}
+
+.letter {
+    display: none;
+    margin-top: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 280px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    animation: openLetter 0.8s ease;
+}
+
+@keyframes openLetter {
+    from {transform: scale(0.7); opacity: 0;}
+    to {transform: scale(1); opacity: 1;}
+}
+
+/* Pixel heart */
+.pixel-heart {
+    font-family: monospace;
+    font-size: 18px;
+    color: #ff3366;
+    white-space: pre;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Sparkles -->
+<script>
+for(let i=0;i<25;i++){
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left=Math.random()*100+"%";
+    s.style.top=Math.random()*100+"%";
+    s.style.animationDelay=Math.random()*5+"s";
+    document.body.appendChild(s);
+}
+</script>
+
+<!-- LOCK SCREEN -->
+<div id="lockScreen">
+    <h2>🔒 Enter Passcode</h2>
+
+    <div class="pass-dots">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+
+    <div class="keypad">
+        <button onclick="pressKey('1')">1</button>
+        <button onclick="pressKey('2')">2</button>
+        <button onclick="pressKey('3')">3</button>
+        <button onclick="pressKey('4')">4</button>
+        <button onclick="pressKey('5')">5</button>
+        <button onclick="pressKey('6')">6</button>
+        <button onclick="pressKey('7')">7</button>
+        <button onclick="pressKey('8')">8</button>
+        <button onclick="pressKey('9')">9</button>
+        <button onclick="clearCode()">⌫</button>
+        <button onclick="pressKey('0')">0</button>
+    </div>
+
+    <div class="clue">clue: tanggal lahir biyel 💭</div>
+</div>
+
+<!-- LETTER -->
+<div id="letterPage">
+    <h2>💌 For You</h2>
+
+    <div class="envelope" onclick="openLetter()"></div>
+    <div class="envelope-text">klik suratnyaaa</div>
+
+    <div class="letter" id="letterContent">
+        <p>
+            semangat terus ya owel 💪✨<br>
+            jangan capek capek sama abriel:DD<br>
+            lovyu
+        </p>
+
+        <div class="pixel-heart">
+  ███   ███
+ █████ █████
+ ███████████
+  █████████
+   ███████
+    █████
+     ███
+      █
+        </div>
+    </div>
+</div>
+
+<audio id="openSound">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_3e68c0b8bb.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let input="";
+const correctCode="140410";
+const dots=document.querySelectorAll(".dot");
+const sound=document.getElementById("openSound");
+
+function pressKey(num){
+    if(input.length<6){
+        input+=num;
+        dots[input.length-1].classList.add("filled");
+    }
+    if(input.length===6){
+        setTimeout(checkCode,300);
+    }
+}
+
+function clearCode(){
+    input="";
+    dots.forEach(d=>d.classList.remove("filled"));
+}
+
+function checkCode(){
+    if(input===correctCode){
+        document.getElementById("lockScreen").style.display="none";
+        document.getElementById("letterPage").style.display="block";
+    }else{
+        alert("kode salah 😭");
+        clearCode();
+    }
+}
+
+function openLetter(){
+    sound.play();
+    document.getElementById("letterContent").style.display="block";
+}
+</script>
+
+</body>
+</html>
